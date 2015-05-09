@@ -11,12 +11,13 @@ object JavaFXMobilePlugin extends AutoPlugin{
   object autoImport {
     lazy val createGradleProject    = taskKey[File]  ("Produces a gradle project, which uses the JavaFX-Mobile plugin. The result is the folder of the project.")
     lazy val javafx                 = inputKey[Unit] ("Calls the gradle project with the given arguments.")
-    lazy val appName                = inputKey[Unit] ("The name of the generated application.")
+    lazy val appName                = taskKey[String]("The name of the generated application.")
     lazy val gradleBuildContent     = taskKey[String]("The content of the build.gradle file.")
     lazy val javafx_mobile_version  = taskKey[String]("Version of the javafx-mobile-plugin")
     lazy val ios_forceLinkClasses   = taskKey[String]("forceLinkClasses in the gradle project")
     lazy val iosSignIdentity        = taskKey[Option[String]]("The SignIdentity used to build the iOS-App")
     lazy val iosProvisioningProfile = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
+
   }
   import autoImport._
 
@@ -38,7 +39,7 @@ object JavaFXMobilePlugin extends AutoPlugin{
       IO.write(buildFile, gradleBuildContent.value, utf8)
 
       val settingsFile = new File(folder, "settings.gradle")
-      IO.write(settingsFile, s"rootProject.name = '$appName'", utf8)
+      IO.write(settingsFile, s"rootProject.name = '${appName.value}'", utf8)
 
       assembly.value
       folder
