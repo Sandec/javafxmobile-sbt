@@ -9,14 +9,15 @@ import sbt.complete.Parsers._
 object JavaFXMobilePlugin extends AutoPlugin{
 
   object autoImport {
-    lazy val createGradleProject    = taskKey[File]  ("Produces a gradle project, which uses the JavaFX-Mobile plugin. The result is the folder of the project.")
-    lazy val javafx                 = inputKey[Unit] ("Calls the gradle project with the given arguments.")
-    lazy val appName                = taskKey[String]("The name of the generated application.")
-    lazy val gradleBuildContent     = taskKey[String]("The content of the build.gradle file.")
-    lazy val javafx_mobile_version  = taskKey[String]("Version of the javafx-mobile-plugin")
-    lazy val ios_forceLinkClasses   = taskKey[String]("forceLinkClasses in the gradle project")
-    lazy val iosSignIdentity        = taskKey[Option[String]]("The SignIdentity used to build the iOS-App")
-    lazy val iosProvisioningProfile = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
+    lazy val createGradleProject       = taskKey[File]  ("Produces a gradle project, which uses the JavaFX-Mobile plugin. The result is the folder of the project.")
+    lazy val javafx                    = inputKey[Unit] ("Calls the gradle project with the given arguments.")
+    lazy val appName                   = taskKey[String]("The name of the generated application.")
+    lazy val gradleBuildContent        = taskKey[String]("The content of the build.gradle file.")
+    lazy val javafx_mobile_version     = taskKey[String]("Version of the javafx-mobile-plugin")
+    lazy val androidApplicationPackage = taskKey[String]("The application package of the android application.")
+    lazy val ios_forceLinkClasses      = taskKey[String]("forceLinkClasses in the gradle project")
+    lazy val iosSignIdentity           = taskKey[Option[String]]("The SignIdentity used to build the iOS-App")
+    lazy val iosProvisioningProfile    = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
 
   }
   import autoImport._
@@ -31,6 +32,7 @@ object JavaFXMobilePlugin extends AutoPlugin{
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
     appName                := name.value,
+    androidApplicationPackage := (mainClass in assembly).value.get,
     createGradleProject := {
       val folder = new File(target.value, "gradleProj")
       folder.mkdir
@@ -98,7 +100,7 @@ jfxmobile {
         ${iosProvisioningProfile.value.map{"iosProvisioningProfile = '" + _ + "'"}.getOrElse("")}
     }
     android {
-        applicationPackage = '${main}'
+        applicationPackage = '${androidApplicationPackage.value}'
     }
 }
 """
