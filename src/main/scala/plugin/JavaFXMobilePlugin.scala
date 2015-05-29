@@ -26,7 +26,7 @@ object JavaFXMobilePlugin extends AutoPlugin{
   val utf8 = java.nio.charset.Charset.forName("UTF-8")
 
   override def projectSettings = List(
-    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.0-b8",
+    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.0-b9",
     ios_forceLinkClasses   := "['ensemble.**.*']",
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
@@ -51,11 +51,14 @@ object JavaFXMobilePlugin extends AutoPlugin{
 
       val commandUnix = Process("gradle" :: cmd, createGradleProject.value)
       val commandCMD  = Process("cmd.exe" :: "/c" :: "gradle.bat" :: cmd, createGradleProject.value)
-      try {
+      val exitCode = try {
         commandUnix !
       } catch {
         case e: java.io.IOException => //couldn't found gradle, now trying cmd for windows users
           commandCMD !
+      }
+      if(exitCode != 0) {
+        sys.error(s"the command gradle ${cmd.reduce(_ + " " + _)} returned the exitcode $exitCode !")
       }
     },
 
@@ -95,7 +98,7 @@ jfxmobile {
         ${iosProvisioningProfile.value.map{"iosProvisioningProfile = '" + _ + "'"}.getOrElse("")}
     }
     android {
-        applicationPackage = 'app.javafx'
+        applicationPackage = '${main}'
     }
 }
 """
