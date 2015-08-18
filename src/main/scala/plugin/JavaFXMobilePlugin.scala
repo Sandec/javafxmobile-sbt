@@ -6,7 +6,7 @@ import sbtassembly.AssemblyPlugin
 import sbtassembly.AssemblyPlugin.autoImport._
 import sbt.complete.Parsers._
 
-object JavaFXMobilePlugin extends AutoPlugin{
+object JavaFXMobilePlugin extends AutoPlugin {
 
   object autoImport {
     lazy val createGradleProject       = taskKey[File]  ("Produces a gradle project, which uses the JavaFX-Mobile plugin. The result is the folder of the project.")
@@ -15,6 +15,7 @@ object JavaFXMobilePlugin extends AutoPlugin{
     lazy val gradleBuildContent        = taskKey[String]("The content of the build.gradle file.")
     lazy val javafx_mobile_version     = taskKey[String]("Version of the javafx-mobile-plugin")
     lazy val androidApplicationPackage = taskKey[String]("The application package of the android application.")
+    lazy val androidManifest           = taskKey[String]("The Android-Manifest file.")
     lazy val ios_forceLinkClasses      = taskKey[String]("forceLinkClasses in the gradle project")
     lazy val iosSignIdentity           = taskKey[Option[String]]("The SignIdentity used to build the iOS-App")
     lazy val iosProvisioningProfile    = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
@@ -27,7 +28,7 @@ object JavaFXMobilePlugin extends AutoPlugin{
   val utf8 = java.nio.charset.Charset.forName("UTF-8")
 
   override def projectSettings = List(
-    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.0-b9",
+    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.0-b10",
     ios_forceLinkClasses   := "['ensemble.**.*']",
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
@@ -101,6 +102,8 @@ jfxmobile {
     }
     android {
         applicationPackage = '${androidApplicationPackage.value}'
+        resDirectory = '../../src/main/res'
+        manifest = '../../src/main/AndroidManifest.xml'
     }
 }
 """
