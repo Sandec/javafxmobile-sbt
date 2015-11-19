@@ -1,6 +1,6 @@
 sbtPlugin := true
 
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.0")
 
 name := "javafxmobile-sbt"
 organization := "SANDEC"

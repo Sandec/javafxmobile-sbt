@@ -28,7 +28,7 @@ object JavaFXMobilePlugin extends AutoPlugin {
   val utf8 = java.nio.charset.Charset.forName("UTF-8")
 
   override def projectSettings = List(
-    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.1",
+    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.6",
     ios_forceLinkClasses   := s"[]",
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
@@ -103,7 +103,11 @@ jfxmobile {
     android {
         applicationPackage = '${androidApplicationPackage.value}'
         resDirectory = '../../src/main/android/res'
-        manifest = '../../src/main/AndroidManifest.xml'
+        ${
+          if (new File(new File(sourceDirectory.value, "main"), "AndroidManifest.xml").exists)
+            "manifest = '../../src/main/AndroidManifest.xml'"
+          else ""
+        }
     }
 }
 """
