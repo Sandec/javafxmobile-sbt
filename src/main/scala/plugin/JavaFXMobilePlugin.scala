@@ -19,6 +19,7 @@ object JavaFXMobilePlugin extends AutoPlugin {
     lazy val ios_forceLinkClasses      = taskKey[String]("forceLinkClasses in the gradle project")
     lazy val iosSignIdentity           = taskKey[Option[String]]("The SignIdentity used to build the iOS-App")
     lazy val iosProvisioningProfile    = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
+    lazy val iosConfigFile             = taskKey[Option[String]]("The ProvisioningProfile used to build the iOS-App")
 
   }
   import autoImport._
@@ -32,6 +33,7 @@ object JavaFXMobilePlugin extends AutoPlugin {
     ios_forceLinkClasses   := s"[]",
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
+    iosConfigFile          := None,
     appName                := name.value,
     androidApplicationPackage := (mainClass in assembly).value.get,
     createGradleProject := {
@@ -97,12 +99,14 @@ repositories {
 jfxmobile {
     ios {
         forceLinkClasses = ${ios_forceLinkClasses.value}
+        assetsDirectory = '../../src/ios/assets'
         ${iosSignIdentity       .value.map{"iosSignIdentity        = '" + _ + "'"}.getOrElse("")}
         ${iosProvisioningProfile.value.map{"iosProvisioningProfile = '" + _ + "'"}.getOrElse("")}
+        ${iosConfigFile         .value.map{"configFile             = '" + _ + "'"}.getOrElse("")}
     }
     android {
         applicationPackage = '${androidApplicationPackage.value}'
-        resDirectory = '../../src/main/android/res'
+        resDirectory = '../../src/android/res'
         ${
           if (new File(new File(sourceDirectory.value, "main"), "AndroidManifest.xml").exists)
             "manifest = '../../src/main/AndroidManifest.xml'"
