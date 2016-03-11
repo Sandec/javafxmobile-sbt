@@ -10,7 +10,7 @@ It creates a gradle project with the [javafxmobile-plugin](https://bitbucket.org
 Add the following to your project/plugins.sbt:
 ```scala
 resolvers += Resolver.url("SANDEC", url("http://dl.bintray.com/sandec/repo"))(Resolver.ivyStylePatterns)
-"SANDEC" % "javafxmobile-sbt" % "0.1.2-SNAPSHOT"
+"SANDEC" % "javafxmobile-sbt" % "0.1.3"
 ```
 Add the following to your build.sbt:
 ```scala
