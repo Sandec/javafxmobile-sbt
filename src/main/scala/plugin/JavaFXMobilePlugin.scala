@@ -29,7 +29,7 @@ object JavaFXMobilePlugin extends AutoPlugin {
   val utf8 = java.nio.charset.Charset.forName("UTF-8")
 
   override def projectSettings = List(
-    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.6",
+    javafx_mobile_version  := "org.javafxports:jfxmobile-plugin:1.0.7",
     ios_forceLinkClasses   := s"[]",
     iosSignIdentity        := None,
     iosProvisioningProfile := None,
